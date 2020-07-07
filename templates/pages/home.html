@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block head_title %}Home{% endblock head_title %}
+{% block body %}
+<div id="main" class="row mt-3">  
+</div>
+<script>
+const m_d = document.getElementById('main')
+
+function likesButtonHandler() {
+    console.log('aler')
+}
+function tweetFormatList(tweet) {
+    var tweet = '<div class="col-12 g-3 border col-md-10 mx-auto"><h1 class="tweet-'+tweet.id+'">'+tweet.content+'</h1>'+'<div>'+'<button class="btn btn-primary btn-small mb-4 " onclick="likesButtonHandler()">'+tweet.likes+' Likes</button>'+'</div> </div>'
+    return tweet
+}
+
+const xhr = new XMLHttpRequest()
+const url = '/tweets'
+const method = 'GET'
+const responseType = 'json'
+
+xhr.responseType = responseType
+xhr.open(method, url)
+xhr.onload = function() {
+    var listedItems = xhr.response.response
+    //append this data into html
+    var finalList = ''
+    var i;
+    for(i = 0; i<listedItems.length; i++) {
+        const currentList = tweetFormatList(listedItems[i])
+        finalList += currentList
+    }
+    m_d.innerHTML = finalList
+}
+xhr.send()
+
+</script>
+{% endblock body %}
